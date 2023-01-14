@@ -1,15 +1,3 @@
-// custom fetch wrappers.. for reasons
-import {
-    CookieJar,
-    wrapFetch,
-} from "https://deno.land/x/another_cookiejar@v5.0.1/mod.ts";
-
-const cookieJar = new CookieJar();
-
-const wrappedFetch = wrapFetch({
-    cookieJar,
-});
-
 export interface Options {
     url?: string;
     apiUrl?: string;
@@ -32,7 +20,7 @@ const newSession = (opts: Options) => {
         get: async (path: string, useAPI = false, opts2?: {
             params?: URLSearchParams;
         }) => {
-            const res = await wrappedFetch(
+            const res = await fetch(
                 (useAPI ? opts.apiUrl : opts.url) + path + "?" +
                         opts2?.params ?? "",
                 {

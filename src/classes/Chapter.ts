@@ -1,8 +1,7 @@
-import { Part as PartType } from "../types.d.ts";
-import { newSession } from "../utils/http.ts";
+import { Part as PartType, Session } from "../types.d.ts";
 
 export default class Chapter {
-    #session: ReturnType<typeof newSession>;
+    #session: Session;
     id: string;
     workID: string;
     /**
@@ -25,7 +24,7 @@ export default class Chapter {
     constructor(
         workId: string,
         part: PartType,
-        session: ReturnType<typeof newSession>,
+        session: Session,
     ) {
         this.#session = session;
         this.workID = workId;

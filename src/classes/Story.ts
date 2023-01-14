@@ -1,9 +1,8 @@
 import Chapter from "./Chapter.ts";
-import { ID, StoryJSON } from "../types.d.ts";
-import { newSession } from "../utils/http.ts";
+import { Session, StoryJSON } from "../types.d.ts";
 
 export default class Story {
-    #session: ReturnType<typeof newSession>;
+    #session: Session;
     /**
      * ID of the work
      */
@@ -40,11 +39,11 @@ export default class Story {
      * @param session an axiod session (used for fetching additional details)
      */
     constructor(
-        id: ID,
-        session: ReturnType<typeof newSession>,
+        id: string,
+        session: Session,
     ) {
         this.#session = session;
-        this.id = id.toString();
+        this.id = id;
     }
 
     async init() {

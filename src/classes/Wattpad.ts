@@ -1,13 +1,11 @@
 import Work from "./Story.ts";
-import { ID } from "../types.d.ts";
-import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts";
 import Search, { SearchParameters as QuerySearchParams } from "./Search.ts";
 import TagSearch, { SearchParameters as TagSearchParams } from "./TagSearch.ts";
 import { newSession, Options } from "../utils/http.ts";
+import { Session } from "../types.d.ts";
 
 export default class Wattpad {
-    session: ReturnType<typeof newSession>;
-    DOMParser = new DOMParser();
+    session: Session;
 
     /**
      * a representation of Wattpad in class form
@@ -26,7 +24,7 @@ export default class Wattpad {
      * gets a Story from an ID
      * @returns {Promise<Work>} a Work class for the work
      */
-    async getWork(id: ID): Promise<Work> {
+    async getWork(id: string): Promise<Work> {
         return new Work(id, this.session);
     }
 

@@ -1,5 +1,4 @@
-import { SearchResults } from "../types.d.ts";
-import { newSession } from "../utils/http.ts";
+import { SearchResults, Session } from "../types.d.ts";
 import Work from "./Story.ts";
 
 export interface SearchParameters {
@@ -20,12 +19,12 @@ export default class Search {
         isTitle: false,
         limit: 30,
     };
-    #session: ReturnType<typeof newSession>;
+    #session: Session;
     results: Work[] = [];
 
     constructor(
         opts: SearchParameters,
-        session: ReturnType<typeof newSession>,
+        session: Session,
     ) {
         this.#session = session;
         Object.assign(this.#opts, opts);
