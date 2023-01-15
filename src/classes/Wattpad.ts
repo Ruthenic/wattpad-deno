@@ -1,4 +1,4 @@
-import Work from "./Story.ts";
+import Story from "./Story.ts";
 import Search, { SearchParameters as QuerySearchParams } from "./Search.ts";
 import TagSearch, { SearchParameters as TagSearchParams } from "./TagSearch.ts";
 import { newSession, Options } from "../utils/http.ts";
@@ -22,10 +22,10 @@ export default class Wattpad {
 
     /**
      * gets a Story from an ID
-     * @returns {Promise<Work>} a Work class for the work
+     * @returns {Promise<Story>} a Story class for the story
      */
-    async getWork(id: string): Promise<Work> {
-        return new Work(id, this.session);
+    getStory(id: string): Story {
+        return new Story(id, this.session);
     }
 
     search(opts: QuerySearchParams) {
