@@ -42,7 +42,7 @@ export default class Chapter {
 
         this.html = html;
 
-        // pseudo-parse html to markdown with regex
+        // "parse" html to markdown with regex
         this.text = html
             .replaceAll(
                 /<p( data-p-id=".{32}")?( style="(text-align):(left|right|center);")?>/g,
