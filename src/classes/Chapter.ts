@@ -37,6 +37,7 @@ export default class Chapter {
         const html = await (await this.#session.get("/apiv2/storytext", false, {
             params: new URLSearchParams({
                 id: this.id,
+                mature: "1",
             }),
         })).text();
 

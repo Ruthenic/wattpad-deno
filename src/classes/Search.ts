@@ -41,6 +41,7 @@ export default class Search {
                         : this.#opts.query,
                     limit: this.#opts.limit.toString(),
                     offset: (pageNum * this.#opts.limit).toString(),
+                    mature: "1",
                 }),
             })).json();
 

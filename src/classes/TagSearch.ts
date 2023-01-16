@@ -36,6 +36,7 @@ export default class Search {
                     tags: this.#opts.tags.join(","),
                     offset: (pageNum * this.#opts.limit).toString(),
                     limit: this.#opts.limit.toString(),
+                    mature: "1",
                 }),
             })).json();
 
