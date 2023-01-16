@@ -20,6 +20,24 @@ export default class Wattpad {
         this.session = newSession(opts ?? {});
     }
 
+    async authenticate(username: string, password: string) {
+        await this.session.post("https://www.wattpad.com/login", {
+            "credentials": "include",
+            "headers": {
+                "User-Agent":
+                    "Mozilla/5.0 (Windows NT 10.0; rv:108.0) Gecko/20100101 Firefox/108.0",
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            "referrer": "https://www.wattpad.com/login",
+            "body": new URLSearchParams({
+                username,
+                password,
+            }),
+            "method": "POST",
+            "mode": "cors",
+        });
+    }
+
     /**
      * gets a Story from an ID
      * @returns {Promise<Story>} a Story class for the story

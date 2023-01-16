@@ -1,3 +1,11 @@
+import {
+    CookieJar,
+    wrapFetch,
+} from "https://deno.land/x/another_cookiejar@v5.0.2/mod.ts";
+
+const cookieJar = new CookieJar();
+const cookieFetch = wrapFetch({ cookieJar });
+
 export interface Options {
     url?: string;
     apiUrl?: string;
@@ -20,12 +28,23 @@ const newSession = (opts: Options) => {
         get: async (path: string, useAPI = false, opts2?: {
             params?: URLSearchParams;
         }) => {
-            const res = await fetch(
+            const res = await cookieFetch(
                 (useAPI ? opts.apiUrl : opts.url) + path + "?" +
                         opts2?.params ?? "",
                 {
                     headers: opts.headers,
                 },
+            );
+            if (res.status > 300) {
+                console.log(res);
+                throw new Error("Failed request, probably rate-limited");
+            }
+            return res;
+        },
+        post: async (url: string, opts2: RequestInit) => {
+            const res = await cookieFetch(
+                url,
+                opts2,
             );
             if (res.status > 300) {
                 console.log(res);
