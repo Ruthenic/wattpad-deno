@@ -2,22 +2,25 @@ import { SearchResults, Session } from "../types.d.ts";
 import Work from "./Story.ts";
 
 export interface SearchParameters {
-    query: string;
-    isTitle?: boolean;
+    query: string | string[];
+    type: "text" | "title" | "tag";
+    sort?: string;
     limit?: number;
 }
 
 export interface PrivateSearchParameters {
-    query: string;
-    isTitle: boolean;
+    query: string | string[];
+    type: "text" | "title" | "tag";
     limit: number;
+    sort: string;
 }
 
 export default class Search {
     #opts: PrivateSearchParameters = {
         query: "",
-        isTitle: false,
+        type: "text",
         limit: 30,
+        sort: "hot",
     };
     #session: Session;
     results: Work[] = [];
@@ -28,17 +31,31 @@ export default class Search {
     ) {
         this.#session = session;
         Object.assign(this.#opts, opts);
+
+        switch (this.#opts.type) {
+            case "title":
+                this.#opts.query = "title:" + this.#opts.query;
+                break;
+            case "tag":
+                if (this.#opts.query.constructor === Array) {
+                    this.#opts.query = "#" + this.#opts.query.join(" #");
+                }
+                break;
+            case "text":
+            default:
+                break;
+        }
     }
 
     async update(pageNum: number) {
         this.results = [];
 
         const res: SearchResults =
-            await (await this.#session.get("/v4/search/stories", true, {
+            await (await this.#session.get("/v4/stories", false, {
                 params: new URLSearchParams({
-                    query: this.#opts.isTitle
-                        ? `title: ${this.#opts.query}`
-                        : this.#opts.query,
+                    fields: "stories(id)",
+                    query: this.#opts.query as string,
+                    filter: this.#opts.sort,
                     limit: this.#opts.limit.toString(),
                     offset: (pageNum * this.#opts.limit).toString(),
                     mature: "1",

@@ -6,6 +6,7 @@ export default function test(watt: Wattpad) {
         await test.step("specific search", async () => {
             const search = watt.search({
                 query: "Inky Desires [Bendy x Reader]",
+                type: "text",
             }); // if a search for the exact name of my fic doesn't return the fic i will shit myself
 
             await search.update(0);
@@ -20,6 +21,7 @@ export default function test(watt: Wattpad) {
         await test.step("broad search", async () => {
             const search = watt.search({
                 query: "huggy wuggy smut",
+                type: "text",
             });
 
             await search.update(0);
@@ -35,8 +37,9 @@ export default function test(watt: Wattpad) {
     });
     Deno.test("tag searches", async (test) => {
         await test.step("specific search", async () => {
-            const search = watt.tagSearch({
-                tags: ["bluesourpachkid"],
+            const search = watt.search({
+                query: ["bluesourpachkid"],
+                type: "tag",
             }); // if somebody else uses this exact tag (including misspelling) i will also shit myself
 
             await search.update(0);
@@ -49,8 +52,10 @@ export default function test(watt: Wattpad) {
             );
         });
         await test.step("broad search", async () => {
-            const search = watt.tagSearch({
-                tags: ["batim", "bendyxreader"],
+            const search = watt.search({
+                query: ["batim", "bendyxreader"],
+                type: "tag",
+                limit: 20,
             });
 
             await search.update(0);

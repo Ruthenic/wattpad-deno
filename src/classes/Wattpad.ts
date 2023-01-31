@@ -1,6 +1,5 @@
 import Story from "./Story.ts";
 import Search, { SearchParameters as QuerySearchParams } from "./Search.ts";
-import TagSearch, { SearchParameters as TagSearchParams } from "./TagSearch.ts";
 import { newSession, Options } from "../utils/http.ts";
 import { Session } from "../types.d.ts";
 
@@ -48,9 +47,5 @@ export default class Wattpad {
 
     search(opts: QuerySearchParams) {
         return new Search(opts, this.session);
-    }
-
-    tagSearch(opts: TagSearchParams) {
-        return new TagSearch(opts, this.session);
     }
 }
