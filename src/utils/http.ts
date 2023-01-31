@@ -16,6 +16,10 @@ const defaultOptions: Options = {
     url: "https://wattpad.com",
     apiUrl: "https://api.wattpad.com",
     headers: {
+        // lol
+        "Authorization": (/wattpad\.apiAuthKey = ('|")(.*)('|")/.exec(
+            await (await fetch("https://www.wattpad.com")).text(),
+        ) as RegExpExecArray)[2],
         "User-Agent":
             `Mozilla/5.0 (Windows NT 10.0; rv:108.0) Gecko/20100101 Firefox/108.0`,
         "Accept-Language": "en-US,en;q=0.5",
@@ -30,13 +34,23 @@ const newSession = (opts: Options) => {
         }) => {
             const res = await cookieFetch(
                 (useAPI ? opts.apiUrl : opts.url) + path + "?" +
-                        opts2?.params ?? "",
+                    (opts2?.params ?? "") +
+                    `&wp_token=${cookieJar.getCookie({
+                        name: "token",
+                    })?.toString().split("=")?.[1]}`,
                 {
                     headers: opts.headers,
                 },
             );
             if (res.status > 300) {
-                console.log(res);
+                console.log(
+                    (useAPI ? opts.apiUrl : opts.url) + path + "?" +
+                        (opts2?.params ?? "") +
+                        `&wp_token=${cookieJar.getCookie({
+                            name: "token",
+                        })?.toString().split("=")?.[1]}`,
+                );
+                console.log(await res.json());
                 throw new Error("Failed request, probably rate-limited");
             }
             return res;
