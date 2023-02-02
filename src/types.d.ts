@@ -48,6 +48,7 @@ export interface Part {
     id: number;
     title: string;
     url: string;
+    createDate: string;
     modifyDate: string;
     length: number;
     videoId: string;
