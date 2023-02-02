@@ -7,8 +7,7 @@ pipeline:
     build:
         image: node:current-buster
         commands:
-            - ls
-            - $PWD/buildNode
+            - ./buildNode
     deploy:
         image: plugins/npm
         settings:
