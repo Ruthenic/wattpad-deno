@@ -1,4 +1,5 @@
 import { build, emptyDir } from "https://deno.land/x/dnt@0.33.1/mod.ts";
+import { VERSION } from "./mod.ts";
 
 await emptyDir("./npm");
 
@@ -35,10 +36,11 @@ await build({
     },
     package: {
         name: "wattpad",
-        version: Deno.args[0],
-        description: "new air wyatts",
+        version: VERSION,
+        description: "unofficial Wattpad API wrapper",
         license: "Unlicense",
     },
 });
 
 Deno.copyFileSync("README.md", "npm/README.md");
+Deno.copyFileSync("LICENSE", "npm/LICENSE");
