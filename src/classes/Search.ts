@@ -50,17 +50,16 @@ export default class Search {
     async update(pageNum: number) {
         this.results = [];
 
-        const res: SearchResults =
-            await (await this.#session.get("/v4/stories", false, {
-                params: new URLSearchParams({
-                    fields: "stories(id)",
-                    query: this.#opts.query as string,
-                    filter: this.#opts.sort,
-                    limit: this.#opts.limit.toString(),
-                    offset: (pageNum * this.#opts.limit).toString(),
-                    mature: "1",
-                }),
-            })).json();
+        const res = await (await this.#session.get("/v4/stories", false, {
+            params: new URLSearchParams({
+                fields: "stories(id)",
+                query: this.#opts.query as string,
+                filter: this.#opts.sort,
+                limit: this.#opts.limit.toString(),
+                offset: (pageNum * this.#opts.limit).toString(),
+                mature: "1",
+            }),
+        })).json() as SearchResults;
 
         for (let i = 0; i < res.stories.length; i++) {
             const work = new Work(

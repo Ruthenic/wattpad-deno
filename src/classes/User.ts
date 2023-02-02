@@ -28,7 +28,7 @@ export default class User {
                 }),
             },
         ))
-            .json();
+            .json() as UserJSON;
 
         this.displayName = this.userJSON.name;
         this.description = this.userJSON.description;
@@ -36,7 +36,7 @@ export default class User {
     }
 
     async updateStories(pageNum: number) {
-        const res: SearchResults = await (await this.#session.get(
+        const res = await (await this.#session.get(
             `/v4/users/${this.username}/stories/published`,
             false,
             {
@@ -47,7 +47,7 @@ export default class User {
                     mature: "1",
                 }),
             },
-        )).json();
+        )).json() as SearchResults;
 
         for (let i = 0; i < res.stories.length; i++) {
             const story = new Story(
