@@ -2,7 +2,7 @@ pipeline:
     build:
         image: denoland/deno:alpine
         commands:
-            - deno test -A --unstable buildNode.ts
+            - deno test -A buildNode.ts
     deploy:
         image: plugins/npm
         settings:
