@@ -12,9 +12,9 @@ pipeline:
         image: plugins/npm
         settings:
             username: ruthenic
-            token: NPM_API_KEY
+            token:
+                from_secret: NPM_API_KEY
             folder: npm
-        secrets: [NPM_API_KEY]
         when:
             event: tag
 
