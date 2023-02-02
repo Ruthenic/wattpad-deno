@@ -12,11 +12,10 @@ export interface Options {
 
 const cookies: Cookie[] = [];
 
-function isRedirect(status: number) {
-    return [301, 302, 303, 307, 308].includes(status);
-}
-
-async function cookieFetch(input: RequestInfo, init?: RequestInit) {
+async function cookieFetch(
+    input: RequestInfo,
+    init?: RequestInit,
+): Promise<Response> {
     const headers = new Headers((input as Request).headers || {});
 
     if (init?.headers) {
@@ -41,7 +40,7 @@ async function cookieFetch(input: RequestInfo, init?: RequestInit) {
     if (setCookies) {
         for (let i = 0; i < setCookies.length; i++) {
             const setCookie = setCookies[i];
-            // FIXME: this dupe protection is bad out of 10
+
             if (!cookies.find((cookie) => cookie.name === setCookie.name)) {
                 cookies.push(setCookie);
             }
@@ -79,7 +78,7 @@ const newSession = (opts: Options) => {
                 headers: opts.headers,
             });
 
-            if (res.status > 300) {
+            if (res.status > 302) {
                 console.log(url);
                 console.log(await res.json());
                 throw new Error("Failed request, probably rate-limited");
@@ -93,7 +92,7 @@ const newSession = (opts: Options) => {
                 url,
                 opts2,
             );
-            if (res.status > 300) {
+            if (res.status > 302) {
                 console.log(res);
                 throw new Error("Failed request, probably rate-limited");
             }

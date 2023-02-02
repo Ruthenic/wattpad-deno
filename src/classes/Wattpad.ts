@@ -33,6 +33,7 @@ export default class Wattpad {
                 password,
             }),
             "method": "POST",
+            redirect: "manual",
         });
     }
 

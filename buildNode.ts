@@ -28,6 +28,8 @@ await build({
             }, {
                 name: "RequestInfo",
                 typeOnly: true,
+            }, {
+                name: "Response",
             }],
         }],
     },
