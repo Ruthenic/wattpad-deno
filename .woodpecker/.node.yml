@@ -2,8 +2,7 @@ pipeline:
     build:
         image: denoland/deno:debian
         commands:
-            - apt update
-            - apt install nodejs npm
+            - curl --help
             - deno test -A buildNode.ts
     deploy:
         image: plugins/npm
