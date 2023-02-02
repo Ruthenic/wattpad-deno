@@ -1,5 +1,5 @@
 pipeline:
     test:
-        image: denoland/deno:alpine
+        image: denoland/deno:debian
         commands:
             - deno test -A --unstable tests/index.ts
