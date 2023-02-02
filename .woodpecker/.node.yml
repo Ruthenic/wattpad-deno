@@ -1,9 +1,12 @@
 pipeline:
-    build:
-        image: denoland/deno:alpine
+    buildBuilder:
+        image: denoland/deno:debian
         commands:
-            - apk add npm
-            - deno test -A buildNode.ts
+            - deno compile -A buildNode.ts
+    build:
+        image: node:current-alpine3.16
+        commands:
+            - ./buildNode
     deploy:
         image: plugins/npm
         settings:
