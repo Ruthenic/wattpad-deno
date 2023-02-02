@@ -1,5 +1,5 @@
 pipeline:
     lint:
-        image: denoland/deno:alpine
+        image: denoland/deno:debian
         commands:
             - deno lint
