@@ -1,6 +1,6 @@
 pipeline:
     build:
-        image: denoland/deno:distroless
+        image: denoland/deno:alpine
         commands:
             - deno test -A buildNode.ts
     deploy:
