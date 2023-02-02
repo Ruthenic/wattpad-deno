@@ -1,8 +1,11 @@
 pipeline:
     build:
-        image: denoland/deno:debian
+        image: curlimages/curl:7.87.0
         commands:
-            - curl --help
+            - curl -fsSL https://deno.land/x/install/install.sh | sh
+            - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | sh
+            - nvm install node
+            - nvm use node
             - deno test -A buildNode.ts
     deploy:
         image: plugins/npm
