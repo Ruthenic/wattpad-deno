@@ -5,7 +5,7 @@ pipeline:
             - deno compile -A buildNode.ts
             - chmod a+x buildNode
     build:
-        image: node:current-alpine3.16
+        image: node:current-buster
         commands:
             - ls
             - $PWD/buildNode
