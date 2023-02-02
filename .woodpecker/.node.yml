@@ -1,9 +1,9 @@
 pipeline:
     build:
-        image: node:19-alpine3.16
+        image: denoland/deno:debian
         commands:
-            - apk add curl
-            - curl -fsSL https://deno.land/x/install/install.sh | sh
+            - apt update
+            - apt install nodejs npm
             - deno test -A buildNode.ts
     deploy:
         image: plugins/npm
