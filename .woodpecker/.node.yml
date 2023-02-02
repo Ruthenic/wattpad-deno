@@ -3,10 +3,11 @@ pipeline:
         image: denoland/deno:debian
         commands:
             - deno compile -A buildNode.ts
+            - chmod a+x buildNode
     build:
         image: node:current-alpine3.16
         commands:
-            - ls
+            - ./buildNode
     deploy:
         image: plugins/npm
         settings:
