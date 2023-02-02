@@ -1,5 +1,6 @@
 import Story from "./Story.ts";
 import Search, { SearchParameters as QuerySearchParams } from "./Search.ts";
+import User from "./User.ts";
 import { newSession, Options } from "../utils/http.ts";
 import { Session } from "../types.d.ts";
 
@@ -43,6 +44,14 @@ export default class Wattpad {
      */
     getStory(id: string): Story {
         return new Story(id, this.session);
+    }
+
+    /**
+     * gets a User from a username
+     * @returns {Promise<User>} a User class for the user
+     */
+    getUser(username: string): User {
+        return new User(this.session, username);
     }
 
     search(opts: QuerySearchParams) {

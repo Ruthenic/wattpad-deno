@@ -28,7 +28,6 @@ export interface StoryJSON {
     tagRankings: TagRanking[];
     highlight_colour: string;
     promoted: boolean;
-    sponsor: any[];
     isAdExempt: boolean;
     story_text_url: TextURL;
     isPaywalled: boolean;
@@ -109,4 +108,48 @@ export interface SearchTag {
     count: number;
     id: string;
     name: string;
+}
+
+export interface UserJSON {
+    username: string;
+    avatar: string;
+    isPrivate: boolean;
+    backgroundUrl: string;
+    follower: boolean;
+    following: boolean;
+    followerRequest: string;
+    followingRequest: string;
+    safety: Safety;
+    name: string;
+    description: string;
+    genderCode: string;
+    language: number;
+    createDate: string;
+    location: string;
+    verified: boolean;
+    ambassador: boolean;
+    facebook: string;
+    twitter: string;
+    website: string;
+    votesReceived: number;
+    numStoriesPublished: number;
+    numFollowing: number;
+    numFollowers: number;
+    numLists: number;
+    verified_email: boolean;
+    is_staff: boolean;
+    highlight_colour: string;
+    programs: Programs;
+    externalId: string;
+    showSocialNetwork: boolean;
+}
+
+export interface Programs {
+    wattpad_stars: boolean;
+    wattpad_circle: boolean;
+}
+
+export interface Safety {
+    isMuted: boolean;
+    isBlocked: boolean;
 }

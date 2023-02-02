@@ -26,11 +26,11 @@ export default function test(watt: Wattpad) {
 
             await search.update(0);
 
-            assert(search.results.length == 30, "not enough search results");
+            assert(search.results.length === 30, "not enough search results");
 
             await search.update(1);
             assert(
-                search.results.length == 30,
+                search.results.length === 30,
                 "could not find second page of results",
             );
         });
@@ -59,11 +59,11 @@ export default function test(watt: Wattpad) {
             });
 
             await search.update(0);
-            assert(search.results.length == 20, "not enough search results");
+            assert(search.results.length === 20, "not enough search results");
 
             await search.update(1);
             assert(
-                search.results.length == 20,
+                search.results.length === 20,
                 "could not find second page of results",
             );
         });

@@ -4,24 +4,33 @@ import { assert } from "https://deno.land/std@0.167.0/testing/asserts.ts";
 
 export default function test(watt: Wattpad) {
     Deno.test("stories", async (test) => {
-        let work: Story;
+        let story: Story;
         await test.step("initialization", async () => {
-            work = watt.getStory("327425279");
-            await work.init();
+            story = watt.getStory("327425279");
+            await story.init();
         });
 
         await test.step("tags", () => {
-            assert(work.tags.length > 0, "Failed to parse any tags");
+            assert(story.tags.length > 0, "Failed to parse any tags");
             assert(
-                work.tags.includes("bendyxreader"),
+                story.tags.includes("bendyxreader"),
                 "Failed to get correct tags",
             );
         });
 
         await test.step("other metadata", () => {
             assert(
-                work.name === "Inky Desires [Bendy X Reader]",
-                "incorrect work name",
+                story.name === "Inky Desires [Bendy X Reader]",
+                "incorrect story name",
+            );
+        });
+
+        await test.step("getting author displayname", async () => {
+            const author = story.getAuthor();
+            await author.init();
+            assert(
+                author.displayName === "DustyAngel47",
+                "incorrect author displayname",
             );
         });
     });

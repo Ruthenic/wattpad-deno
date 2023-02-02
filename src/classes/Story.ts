@@ -1,4 +1,5 @@
 import Chapter from "./Chapter.ts";
+import User from "./User.ts";
 import { Session, StoryJSON } from "../types.d.ts";
 
 export default class Story {
@@ -68,5 +69,9 @@ export default class Story {
         this.chapters = this.storyJSON.parts.map((part) =>
             new Chapter(this.storyJSON.id, part, this.#session)
         );
+    }
+
+    getAuthor() {
+        return new User(this.#session, this.storyJSON.user.name);
     }
 }
