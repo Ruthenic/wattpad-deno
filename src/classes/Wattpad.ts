@@ -22,7 +22,6 @@ export default class Wattpad {
 
     async authenticate(username: string, password: string) {
         await this.session.post("https://www.wattpad.com/login", {
-            "credentials": "include",
             "headers": {
                 "User-Agent":
                     "Mozilla/5.0 (Windows NT 10.0; rv:108.0) Gecko/20100101 Firefox/108.0",
@@ -34,7 +33,7 @@ export default class Wattpad {
                 password,
             }),
             "method": "POST",
-            "mode": "cors",
+            redirect: "manual",
         });
     }
 

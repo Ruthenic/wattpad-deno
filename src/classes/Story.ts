@@ -60,7 +60,7 @@ export default class Story {
                         "id,title,length,createDate,modifyDate,voteCount,readCount,commentCount,url,promoted,sponsor,language,user,description,cover,highlight_colour,completed,isPaywalled,paidModel,categories,numParts,readingPosition,deleted,dateAdded,lastPublishedPart(createDate),tags,copyright,rating,story_text_url(text),,parts(id,title,voteCount,commentCount,videoId,readCount,photoUrl,createDate,modifyDate,length,voted,deleted,text_url(text),dedication,url,wordCount),isAdExempt,tagRankings",
                 }),
             },
-        )).json();
+        )).json() as StoryJSON;
 
         this.name = this.storyJSON.title;
         this.tags = this.storyJSON.tags;

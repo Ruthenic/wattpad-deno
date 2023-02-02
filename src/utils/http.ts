@@ -1,10 +1,8 @@
 import {
-    CookieJar,
-    wrapFetch,
-} from "https://deno.land/x/another_cookiejar@v5.0.2/mod.ts";
-
-const cookieJar = new CookieJar();
-const cookieFetch = wrapFetch({ cookieJar });
+    Cookie,
+    getSetCookies,
+    setCookie,
+} from "https://deno.land/std@0.172.0/http/cookie.ts";
 
 export interface Options {
     url?: string;
@@ -12,12 +10,52 @@ export interface Options {
     headers?: Record<string, string>;
 }
 
+const cookies: Cookie[] = [];
+
+async function cookieFetch(
+    input: RequestInfo,
+    init?: RequestInit,
+): Promise<Response> {
+    const headers = new Headers((input as Request).headers || {});
+
+    if (init?.headers) {
+        const initHeaders = new Headers(init.headers);
+
+        for (const entry of initHeaders.entries()) {
+            headers.set(entry[0], entry[1]);
+        }
+    }
+
+    if (cookies) {
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i];
+
+            setCookie(headers, cookie);
+        }
+    }
+
+    const res = await fetch(input, init);
+    const setCookies = getSetCookies(res.headers);
+
+    if (setCookies) {
+        for (let i = 0; i < setCookies.length; i++) {
+            const setCookie = setCookies[i];
+
+            if (!cookies.find((cookie) => cookie.name === setCookie.name)) {
+                cookies.push(setCookie);
+            }
+        }
+    }
+
+    return res;
+}
+
 const defaultOptions: Options = {
     url: "https://wattpad.com",
     apiUrl: "https://api.wattpad.com",
     headers: {
         // lol
-        "Authorization": (/wattpad\.apiAuthKey = ('|")(.*)('|")/.exec(
+        Authorization: (/wattpad\.apiAuthKey = ('|")(.*)('|")/.exec(
             await (await fetch("https://www.wattpad.com")).text(),
         ) as RegExpExecArray)[2],
         "User-Agent":
@@ -28,39 +66,33 @@ const defaultOptions: Options = {
 
 const newSession = (opts: Options) => {
     opts = Object.assign(defaultOptions, opts);
+
     return {
-        get: async (path: string, useAPI = false, opts2?: {
+        get: async (path: string, useAPI = false, opts2: {
             params?: URLSearchParams;
         }) => {
-            const res = await cookieFetch(
-                (useAPI ? opts.apiUrl : opts.url) + path + "?" +
-                    (opts2?.params ?? "") +
-                    `&wp_token=${cookieJar.getCookie({
-                        name: "token",
-                    })?.toString().split("=")?.[1]}`,
-                {
-                    headers: opts.headers,
-                },
-            );
-            if (res.status > 300) {
-                console.log(
-                    (useAPI ? opts.apiUrl : opts.url) + path + "?" +
-                        (opts2?.params ?? "") +
-                        `&wp_token=${cookieJar.getCookie({
-                            name: "token",
-                        })?.toString().split("=")?.[1]}`,
-                );
+            const url = (useAPI ? opts.apiUrl : opts.url) + path + "?" +
+                (opts2?.params ?? "");
+
+            const res = await cookieFetch(url, {
+                headers: opts.headers,
+            });
+
+            if (res.status > 302) {
+                console.log(url);
                 console.log(await res.json());
                 throw new Error("Failed request, probably rate-limited");
             }
+
             return res;
         },
+
         post: async (url: string, opts2: RequestInit) => {
             const res = await cookieFetch(
                 url,
                 opts2,
             );
-            if (res.status > 300) {
+            if (res.status > 302) {
                 console.log(res);
                 throw new Error("Failed request, probably rate-limited");
             }
