@@ -1,0 +1,5 @@
+pipeline:
+    lint:
+        image: denoland/deno:alpine
+        commands:
+            - deno lint

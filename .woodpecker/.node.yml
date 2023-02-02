@@ -1,0 +1,17 @@
+pipeline:
+    build:
+        image: denoland/deno:alpine
+        commands:
+            - deno test -A --unstable buildNode.ts
+    deploy:
+        image: plugins/npm
+        settings:
+            token: NPM_API_KEY
+            folder: npm
+        secrets: [NPM_API_KEY]
+        when:
+            event: tag
+
+depends_on:
+    - lint
+    - test
