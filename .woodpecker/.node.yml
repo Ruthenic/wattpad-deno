@@ -6,7 +6,7 @@ pipeline:
     build:
         image: node:current-alpine3.16
         commands:
-            - ./buildNode
+            - ls
     deploy:
         image: plugins/npm
         settings:
